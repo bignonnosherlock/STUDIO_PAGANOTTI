@@ -96,36 +96,9 @@ const bookingStyles = {
     marginTop: 8,
   },
   hint: { fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--ink-soft)', marginTop: 4 },
-  success: {
-    background: 'var(--paper-pure)', border: '1px solid var(--marina-200)',
-    borderRadius: 8, padding: '56px 40px', textAlign: 'center',
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18,
-  },
-  checkBadge: {
-    width: 56, height: 56, borderRadius: 999,
-    background: 'var(--marina-050)', color: 'var(--marina-700)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    border: '1px solid var(--marina-200)',
-  },
-  successTitle: { fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--marina-900)', fontWeight: 500, margin: 0 },
-  successCopy: { fontFamily: 'var(--font-sans)', fontSize: 15, lineHeight: 1.6, color: 'var(--ink-body)', margin: 0, maxWidth: '40ch' },
-  reset: {
-    fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
-    color: 'var(--marina-700)', background: 'transparent', border: 'none',
-    cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3,
-    padding: '4px 8px',
-  },
-  errorMsg: {
-    fontFamily: 'var(--font-sans)', fontSize: 13, color: '#c0392b',
-    background: '#fdf0ef', border: '1px solid #f5c6c2',
-    borderRadius: 4, padding: '10px 14px',
-  },
 };
 
 const BookingForm = () => {
-  const [submitted, setSubmitted] = React.useState(false);
-  const [sending, setSending] = React.useState(false);
-  const [error, setError] = React.useState(null);
   const [focused, setFocused] = React.useState(null);
   const onFocus = (n) => () => setFocused(n);
   const onBlur = () => setFocused(null);
@@ -133,59 +106,12 @@ const BookingForm = () => {
     ? { ...bookingStyles.input, borderColor: 'var(--marina-700)', boxShadow: '0 0 0 3px rgba(24,72,120,0.12)' }
     : bookingStyles.input;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSending(true);
-    setError(null);
-    const data = new FormData(e.target);
-    try {
-      const res = await fetch('https://formspree.io/f/xjgzkqzz', {
-        method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' },
-      });
-      if (res.ok) {
-        setSubmitted(true);
-      } else {
-        const json = await res.json();
-        setError((json.errors && json.errors.map(e => e.message).join(', ')) || 'Errore nell\'invio. Riprovi.');
-      }
-    } catch (err) {
-      setError('Errore di rete. Controlla la connessione e riprova.');
-    } finally {
-      setSending(false);
-    }
-  };
-
-  if (submitted) {
-    return (
-      <section style={bookingStyles.wrap}>
-        <div style={{ ...bookingStyles.inner, gridTemplateColumns: '1fr', maxWidth: 700 }}>
-          <div style={bookingStyles.success}>
-            <div style={bookingStyles.checkBadge}>
-              <PgIcon name="check" style={{width:24, height:24, strokeWidth: 1.75}}/>
-            </div>
-            <h3 style={bookingStyles.successTitle}>Richiesta ricevuta.</h3>
-            <p style={bookingStyles.successCopy}>
-              Lo studio Le scriverà entro 24 ore per concordare la data
-              del sopralluogo. Per urgenze può comunque telefonare al
-              numero in fondo alla pagina.
-            </p>
-            <button style={bookingStyles.reset} onClick={() => setSubmitted(false)}>
-              Invia un'altra richiesta
-            </button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section style={bookingStyles.wrap}>
       <div style={bookingStyles.inner}>
         <div style={bookingStyles.intro}>
           <span style={bookingStyles.eyebrow}>— Contatti</span>
-          <h2 style={bookingStyles.h2}>Prenota un sopralluogo.</h2>
+          <h2 style={bookingStyles.h2}>Prenota un appuntamento.</h2>
           <p style={bookingStyles.copy}>
             Ogni pratica viene seguita personalmente dal Geom. Paganotti,
             dal primo sopralluogo fino alla firma del rogito.
@@ -224,8 +150,12 @@ const BookingForm = () => {
             </div>
           </div>
         </div>
-        <form style={bookingStyles.form} onSubmit={handleSubmit}>
-          <h3 style={bookingStyles.formTitle}>Richiesta sopralluogo</h3>
+        <form
+          style={bookingStyles.form}
+          action="https://formspree.io/f/xjgzkqzz"
+          method="POST"
+        >
+          <h3 style={bookingStyles.formTitle}>Richiesta di informazioni</h3>
           <div style={bookingStyles.fieldRow}>
             <div style={bookingStyles.field}>
               <label style={bookingStyles.label}>Cognome</label>
@@ -243,7 +173,7 @@ const BookingForm = () => {
             </div>
             <div style={bookingStyles.field}>
               <label style={bookingStyles.label}>Email</label>
-              <input name="email" type="email" style={{...inputStyle('email'), fontFamily:'var(--font-mono)'}} onFocus={onFocus('email')} onBlur={onBlur} placeholder="mario.rossi@email.it" />
+              <input name="email" type="email" required style={{...inputStyle('email'), fontFamily:'var(--font-mono)'}} onFocus={onFocus('email')} onBlur={onBlur} placeholder="mario.rossi@email.it" />
             </div>
           </div>
           <div style={bookingStyles.field}>
@@ -264,14 +194,12 @@ const BookingForm = () => {
             <label style={bookingStyles.label}>Note</label>
             <textarea name="note" style={{...inputStyle('note'), ...bookingStyles.textarea}} onFocus={onFocus('note')} onBlur={onBlur} placeholder="Descriva brevemente la sua richiesta..."/>
           </div>
-          {error && <p style={bookingStyles.errorMsg}>{error}</p>}
-          <button type="submit" style={{...bookingStyles.submit, opacity: sending ? 0.7 : 1}} disabled={sending}>
-            {sending ? 'Invio in corso…' : <React.Fragment>Invia richiesta <PgIcon name="arrowRight" /></React.Fragment>}
+          <button type="submit" style={bookingStyles.submit}>
+            Invia richiesta <PgIcon name="arrowRight" />
           </button>
           <p style={bookingStyles.hint}>
             I dati sono trattati ai sensi del Reg. UE 2016/679 (GDPR) e
-            verranno utilizzati esclusivamente per dare seguito alla
-            richiesta.
+            verranno utilizzati esclusivamente per dare seguito alla richiesta.
           </p>
         </form>
       </div>
