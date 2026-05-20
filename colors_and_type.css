@@ -1,0 +1,278 @@
+/* ============================================================
+   PAGANOTTI — Foundations
+   Studio Geom. Luciano Paganotti · Novara
+   Calm, classical, sea-blue. Italian professional studio.
+   ============================================================ */
+
+/* -- Webfonts (Google) ------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* -------- Brand blues (sampled from official logo) ------ */
+  --marina-900: #0E2A47;   /* deepest navy — used for body ink */
+  --marina-800: #143458;
+  --marina-700: #184878;   /* primary brand blue */
+  --marina-600: #1F5689;
+  --marina-500: #286898;   /* mid sea */
+  --marina-400: #3D86B5;   /* sky */
+  --marina-300: #7FA9C4;
+  --marina-200: #B9CFDE;   /* mist */
+  --marina-100: #D8E4EC;   /* foam */
+  --marina-050: #EEF3F7;   /* breeze */
+
+  /* -------- Warm paper neutrals --------------------------- */
+  --paper-pure: #FFFFFF;
+  --paper:      #FBF8F2;   /* warm Italian paper */
+  --paper-deep: #F2EDE3;
+  --sand-300:   #E8D9BC;
+  --sand-500:   #C9A87C;   /* travertine accent */
+  --sand-700:   #8C7244;
+
+  /* -------- Ink / text ------------------------------------ */
+  --ink-strong: #0E2A47;   /* primary text — marina-900 */
+  --ink-body:   #25364B;   /* body text */
+  --ink-soft:   #5A6A7E;   /* secondary / captions */
+  --ink-mute:   #8B97A7;   /* hints, meta */
+  --ink-line:   #C8D2DC;   /* hairlines */
+
+  /* -------- Semantic --------------------------------------- */
+  --color-fg:        var(--ink-strong);
+  --color-fg-soft:   var(--ink-body);
+  --color-fg-mute:   var(--ink-soft);
+  --color-bg:        var(--paper);
+  --color-bg-alt:    var(--paper-pure);
+  --color-bg-sunken: var(--paper-deep);
+  --color-bg-deep:   var(--marina-900);
+  --color-accent:    var(--marina-700);
+  --color-accent-soft: var(--marina-200);
+  --color-stone:     var(--sand-500);
+  --color-line:      var(--ink-line);
+
+  --color-success: #3F7A55;
+  --color-warning: #B07C2A;
+  --color-danger:  #9A3B33;
+
+  /* -------- Type families --------------------------------- */
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', 'Georgia', serif;
+  --font-sans:    'DM Sans', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+
+  /* -------- Type scale (modular ratio ~1.25) -------------- */
+  --fs-xs:   12px;
+  --fs-sm:   14px;
+  --fs-base: 16px;
+  --fs-md:   18px;
+  --fs-lg:   22px;
+  --fs-xl:   28px;
+  --fs-2xl:  36px;
+  --fs-3xl:  48px;
+  --fs-4xl:  64px;
+  --fs-5xl:  84px;
+
+  /* -------- Weight + leading ------------------------------ */
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  --lh-tight: 1.08;
+  --lh-snug:  1.22;
+  --lh-base:  1.55;
+  --lh-loose: 1.75;
+
+  --tracking-display: -0.012em;
+  --tracking-body:    0;
+  --tracking-eyebrow: 0.16em;     /* All-caps eyebrows */
+  --tracking-stamp:   0.22em;     /* Stamp-style labels */
+
+  /* -------- Radii ---------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+
+  /* -------- Spacing scale (4px base) --------------------- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+  --sp-10: 128px;
+
+  /* -------- Elevation ------------------------------------ */
+  --shadow-hairline: 0 0 0 1px rgba(20,52,88,0.08);
+  --shadow-sm: 0 1px 2px rgba(14,42,71,0.06), 0 0 0 1px rgba(14,42,71,0.04);
+  --shadow-md: 0 4px 14px -4px rgba(14,42,71,0.12), 0 0 0 1px rgba(14,42,71,0.05);
+  --shadow-lg: 0 18px 38px -16px rgba(14,42,71,0.25), 0 2px 6px rgba(14,42,71,0.06);
+  --shadow-inset: inset 0 0 0 1px rgba(14,42,71,0.08);
+
+  /* -------- Motion --------------------------------------- */
+  --ease-tide:   cubic-bezier(.22,.61,.36,1);     /* calm, sea-like */
+  --ease-stand:  cubic-bezier(.4,0,.2,1);
+  --dur-quick:   140ms;
+  --dur-base:    220ms;
+  --dur-slow:    420ms;
+
+  /* -------- Layout --------------------------------------- */
+  --content-max: 1200px;
+  --measure:     68ch;
+  --rule:        1px solid var(--ink-line);
+}
+
+/* ============================================================
+   SEMANTIC TYPOGRAPHY
+   Use these classes / tags directly. Keep base reset minimal.
+   ============================================================ */
+
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  font-feature-settings: 'ss01','ss02','cv01';
+}
+
+/* --- Display & headings -------------------------------- */
+.display, h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-4xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--ink-strong);
+  margin: 0;
+}
+.display--hero {
+  font-size: var(--fs-5xl);
+  font-weight: var(--fw-light);
+}
+.display--italic, h1 em {
+  font-style: italic;
+  font-weight: var(--fw-regular);
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-3xl);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-display);
+  color: var(--ink-strong);
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+  color: var(--ink-strong);
+  margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+  color: var(--ink-strong);
+  margin: 0;
+}
+
+/* --- Eyebrow / overline (very Italian-formal) ---------- */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--marina-500);
+}
+
+/* --- Stamp label — for cadastral codes / official tags - */
+.stamp-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-stamp);
+  text-transform: uppercase;
+  color: var(--marina-700);
+}
+
+/* --- Body ----------------------------------------------- */
+p, .body {
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--ink-body);
+  margin: 0 0 1em 0;
+  max-width: var(--measure);
+}
+.body-lg, .lede {
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  color: var(--ink-body);
+}
+.body-sm, small, .small {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--ink-soft);
+}
+.caption {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-snug);
+  color: var(--ink-mute);
+  letter-spacing: 0.01em;
+}
+
+/* --- Pull quote / serif italic accent ------------------ */
+.serif-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-snug);
+  color: var(--marina-700);
+  margin: 0;
+}
+
+/* --- Mono / codes (parcel, foglio, particella) ---------- */
+code, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--marina-700);
+  background: var(--marina-050);
+  padding: 0.08em 0.4em;
+  border-radius: var(--radius-xs);
+}
+
+/* --- Links ---------------------------------------------- */
+a {
+  color: var(--marina-700);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--dur-quick) var(--ease-stand);
+}
+a:hover { color: var(--marina-500); }
+
+/* --- Hairline rule --------------------------------------- */
+hr, .rule {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: var(--sp-5) 0;
+}
+.rule--double {
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+  height: 4px;
+  margin: var(--sp-5) 0;
+}
+
+/* --- Selection ------------------------------------------ */
+::selection { background: var(--marina-200); color: var(--marina-900); }
